@@ -2,18 +2,14 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey: "AIzaSyAPlbcocBylqHSA_vpRG8HvuFhCx6fDc88",
+  authDomain: "taoyuan-dd167.firebaseapp.com",
+  projectId: "taoyuan-dd167",
+  storageBucket: "taoyuan-dd167.firebasestorage.app",
+  messagingSenderId: "1079472383479",
+  appId: "1:1079472383479:web:b2d9e17178738207c13af2",
+  measurementId: "G-NM87LBXJ89"
 };
 
-let db = null;
-if (firebaseConfig.projectId) {
-  const app = initializeApp(firebaseConfig);
-  db = getFirestore(app);
-}
-
-export { db };
+const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
