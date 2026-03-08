@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './PropertyViewingForm.css';
+import { createBooking } from './services/bookings';
 
 const PropertyViewingForm = () => {
   const [formData, setFormData] = useState({
@@ -17,6 +18,7 @@ const PropertyViewingForm = () => {
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
 
   const propertyTypes = [
     '公寓',
@@ -68,20 +70,14 @@ const PropertyViewingForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     setIsSubmitting(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      console.log('Form submitted:', formData);
+    setSubmitError(null);
+
+    try {
+      await createBooking(formData);
       setSubmitted(true);
-      setIsSubmitting(false);
-      
-      // Reset form after 3 seconds
       setTimeout(() => {
         setFormData({
           name: '',
@@ -96,7 +92,12 @@ const PropertyViewingForm = () => {
         });
         setSubmitted(false);
       }, 3000);
-    }, 1500);
+    } catch (err) {
+      console.error('預約寫入失敗:', err);
+      setSubmitError(err.message || '無法送出預約，請稍後再試或聯絡我們。');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -287,6 +288,12 @@ const PropertyViewingForm = () => {
               ></textarea>
             </div>
           </div>
+
+          {submitError && (
+            <div className="form-section" style={{ color: '#c62828' }}>
+              {submitError}
+            </div>
+          )}
 
           {/* Submit Button */}
           <div className="form-actions">
